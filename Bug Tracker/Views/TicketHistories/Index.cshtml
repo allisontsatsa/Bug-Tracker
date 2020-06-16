@@ -1,0 +1,70 @@
+﻿@using Bug_Tracker.Helpers;
+@using Bug_Tracker.Models
+
+@model IEnumerable<Bug_Tracker.Models.TicketHistory>
+
+@{
+    ViewBag.Title = "Index";
+    var db = new ApplicationDbContext();
+}
+<div class="container">
+    <h4>Ticket History Index</h4>
+    <div class="col-12">
+        <div class="col-12">
+            <a class="btn btn-secondary btn-sm" onclick="history.back(-1)">
+                <i class="fas fa-arrow-alt-circle-left">
+                </i>
+                Go Back
+            </a>
+        </div>
+        <br />
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>
+                        Ticket
+                    <th>
+                        Changes Made By
+                    </th>
+                    <th>
+                        Changed
+                    </th>
+                    <th>
+                        New
+                    </th>
+                    <th>
+                        Old
+                    </th>
+                    <th>
+                        Property Changed
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TicketId)
+                        </td>
+                        <td>
+                            @HistoriesDisplayHelper.DisplayUser(item)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Changed)
+                        </td>
+                        <td>
+                            @HistoriesDisplayHelper.DisplayData(item)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.OldValue)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Property)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

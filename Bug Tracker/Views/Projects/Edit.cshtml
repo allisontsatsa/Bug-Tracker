@@ -1,0 +1,133 @@
+﻿@model Bug_Tracker.Models.Project
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+    <style>
+    #btns {
+        margin-right: 10px;
+    }
+    #createcard {
+        margin-left: 350px;
+        padding-top: 50px;
+    }
+    #createbutton {
+        background-color: #ffa1a1;
+    }
+    body {
+        /*background-image: url('../../Content/black-sunglasses-on-pink-card-2008144.jpg');*/
+        /*background-image: url('../../Content/snow-capped-mountains-under-the-cloudy-skies-1054289.jpg');*/
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: 100%;
+        background-position: center;
+        z-index: 9000;
+    }
+</style>
+
+<div class="container">
+    <div class="col-12">
+        <div class="col-lg-4" id="createcard">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title m-0">Edit Project</h4>
+                </div>
+                <div class="card-body">
+
+                    @using (Html.BeginForm())
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <div class="form-horizontal">
+                            <h4>Project</h4>
+                            <hr />
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            @Html.HiddenFor(model => model.Id)
+                            @Html.HiddenFor(model => model.Created)
+                            @Html.HiddenFor(model => model.ProjectManagerId)
+
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            @*<div class="form-group">
+                                    @Html.LabelFor(model => model.ProjectManagerId, "", htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.DropDownList("ProjectManagerId", null, "--Select Project Manager--", htmlAttributes: new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.ProjectManagerId, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>*@
+
+                            @*<div class="form-group">
+                                @Html.LabelFor(model => model.Created, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.Created, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.Created, "", new { @class = "text-danger" })
+                                </div>
+                            </div>*@
+
+                            @*<div class="form-group">
+                                    @Html.LabelFor(model => model.Updated, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.Updated, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.Updated, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>*@
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.IsArchived,"Archived?", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    <div class="checkbox">
+                                        @Html.EditorFor(model => model.IsArchived)
+                                        @Html.ValidationMessageFor(model => model.IsArchived, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-10">
+                                    <input type="submit" value="Save" class="btn btn-default" />
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                    <div class="container">
+                        <div class="col-12">
+                            <div class="row">
+                                <a class="btn btn-secondary btn-sm" id="btns" onclick="history.back(-1)">
+                                    <i class="fas fa-arrow-alt-circle-left">
+                                    </i>
+                                    Go Back
+                                </a>
+                                <a class="btn btn-secondary btn-sm" href="@Url.Action("ManageProjectAssignments", "Projects")">
+                                    <i class="fas fa-clipboard">
+                                    </i>
+                                    Assign Users
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

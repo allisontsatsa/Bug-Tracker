@@ -1,0 +1,74 @@
+﻿@model IEnumerable<Bug_Tracker.ViewModel.CustomUserData>
+@{
+    ViewBag.Title = "Manage Roles";
+}
+<style>
+    #tablecard {
+        padding-top: 20px;
+    }
+</style>
+<div class="container">
+    <div class="col-12" id="tablecard">
+        <div class="card card-dark">
+            <div class="card-header">
+                <h4 class="card-title m-0">Manage Roles</h4>
+            </div>
+            <div class="card-body">
+
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+
+                    <div class="row">
+                        <div class="col">
+                            @Html.DropDownList("UserIds", null, "-Select User-", new { @class = "form-control combo" })
+                        </div>
+                        <div class="col">
+                            @Html.DropDownList("RoleName", null, "-Select Role-", new { @class = "form-control combo" })
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col">
+                            <button type="submit" class="btn btn-secondary">Edit Role</button>
+                        </div>
+                    </div>
+                }
+                <br />
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayName("Full Name")
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Email)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.RoleName)
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @foreach (var user in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(model => user.FullName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(model => user.Email)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(model => user.RoleName)
+                                </td>
+
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

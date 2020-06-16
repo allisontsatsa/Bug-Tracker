@@ -1,0 +1,151 @@
+﻿@{ Layout = null; }
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Phage | Log in</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="~/Content/all.css" rel="stylesheet" />
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+
+    <link href="~/Content/icheck-bootstrap.min.css" rel="stylesheet" />
+    <!-- overlayScrollbars -->
+    <link href="~/Content/OverlayScrollbars.min.css" rel="stylesheet" />
+    <!-- Theme style -->
+    <link rel="stylesheet" href="~/Content/adminlte.min.css">
+    <!-- Google Font: Source Sans Pro -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+    <style>
+        #phage {
+            height: 80px;
+            width: 80px;
+        }
+
+        #tbutt {
+            color: #000000;
+        }
+
+        .info-box {
+            color: #d3d3d3;
+        }
+
+        #ticketbox {
+            margin: 0px;
+            padding: 0px;
+        }
+    </style>
+</head>
+<h2>@ViewBag.Title</h2>
+<body class="hold-transition login-page">
+    <div class="login-box">
+        <div class="login-logo">
+            <img src="~/Content/AdobeStock_345568402.png" id="phage" />
+            <b>Phage</b>
+        </div>
+        <!-- /.login-logo -->
+        <div class="card">
+            <div class="card-body login-card-body">
+                <p class="login-box-msg">Sign in to start your DEMO session</p>
+                @using (Html.BeginForm("DemoLoginAsync", "Account", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken();
+                    @Html.Hidden("EmailKey", "DemoAdminEmail")
+                    <button type="submit" class="btn btn-secondary btn-block"><i class="fas fa-user-tie">  Log In As An Admin</i></button>
+
+                    @*<a class="nav-link" name="emailKey" value="DemoAdminEmail">
+                        <div class="info-box" id="ticketbox">
+                            <span class="info-box-icon bg-gradient-gray-dark elevation-1"><i class="fas fa-user-tie"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-number" id="tbutt">Login As An Admin</span>
+                            </div>
+                        </div>*@
+                    <p>Do It All</p>
+                    @*</a>*@
+                }
+                @using (Html.BeginForm("DemoLoginAsync", "Account", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken();
+                    @Html.Hidden("emailKey", "DemoPMEmail")
+
+                    <button type="submit" class="btn btn-secondary btn-block"><i class="fas fa-user-edit">  Log In As A Project Manager</i></button>
+                    @*<a class="nav-link" name="emailKey" value="DemoPMEmail">
+                        <div class="info-box" id="ticketbox">
+                            <span class="info-box-icon bg-gradient-gray-dark elevation-1"><i class="fas fa-user-edit"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-number" id="tbutt">Project Manager Demo</span>
+                            </div>
+                        </div>*@
+                    <p>Create Projects and Assign Users</p>
+                    @*</a>*@
+                }
+                @using (Html.BeginForm("DemoLoginAsync", "Account", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken();
+                    @Html.Hidden("emailKey", "DemoDevEmail")
+                    <button type="submit" class="btn btn-secondary btn-block"><i class="fas fa-laptop">  Log In As A Devloper</i></button>
+                    @*<a class="nav-link" name="emailKey" value="DemoDevEmail">
+                        <div class="info-box" id="ticketbox">
+                            <span class="info-box-icon bg-gradient-gray-dark elevation-1"><i class="fas fa-laptop"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-number" id="tbutt">Developer Demo</span>
+                            </div>
+                        </div>*@
+                    <p>Manage Assigned Tickets</p>
+                    @*</a>*@
+                }
+                @using (Html.BeginForm("DemoLoginAsync", "Account", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken();
+                    @Html.Hidden("emailKey", "DemoSubEmail")
+                    <button type="submit" class="btn btn-secondary btn-block"><i class="fas fa-clipboard-list">  Log In As A Submitter</i></button>
+
+                    @*<a class="nav-link" name="emailKey" value="DemoSubEmail">
+                        <div class="info-box" id="ticketbox">
+                            <span class="info-box-icon bg-gradient-gray-dark elevation-1"><i class="fas fa-clipboard-list"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-number" id="tbutt">Submitter Demo</span>
+                            </div>
+                        </div>*@
+                    <p>Create Tickets</p>
+                    @*</a>*@
+                }
+                <div class="col">
+                    @Html.ActionLink("Back to Registered User Login", "Login", "Account")
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- REQUIRED SCRIPTS -->
+    <!-- jQuery -->
+    <script src="~/Scripts/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="~/Scripts/bootstrap.bundle.min.js"></script>
+    <!-- overlayScrollbars -->
+    <script src="~/Scripts/jquery.overlayScrollbars.min.js"></script>
+
+    <!-- PAGE PLUGINS -->
+    <!-- jQuery Mapael -->
+    <script src="~/Scripts/raphael.min.js"></script>
+    <script src="~/Scripts/jquery.dataTables.min.js"></script>
+    <script src="~/Scripts/dataTables.bootstrap4.min.js"></script>
+    <script src="~/Scripts/dataTables.responsive.min.js"></script>
+    <script src="~/Scripts/responsive.bootstrap4.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="~/Scripts/adminlte.js"></script>
+    <script src="~/Scripts/demo.js"></script>
+    <!-- ChartJS -->
+    <script src="~/Scripts/Chart.min.js"></script>
+
+    <script>
+        $("a.nav-link").on("click", function () {
+            $(this).closest("form").submit();
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,302 @@
+﻿@model Bug_Tracker.Models.Project
+@using Microsoft.AspNet.Identity
+@{
+    ViewBag.Title = "Details";
+}
+
+<style>
+    #btns {
+        margin-right: 10px;
+    }
+
+    #tbutt {
+        color: #343a40;
+    }
+
+    #tablecard {
+        padding-top: 20px;
+    }
+</style>
+
+
+<div class="container">
+    <div class="col-12" id="tablecard">
+        <div class="card card-dark">
+            <div class="card-header">
+                <h4 class="card-title m-0">Project Details</h4>
+            </div>
+            <div class="card-body">
+
+                Assigned to Team
+                <ol>
+                    @foreach (var item in Model.Users)
+                    {
+                        <li>
+                            @item.FullName
+                            @*//add role next to name*@
+                        </li>
+                    }
+                </ol>
+
+                <div class="col-sm-6">
+                    @if ((Model.ProjectManagerId == null) && (User.IsInRole("Admin") || User.IsInRole("DemoAdmin") || User.IsInRole("PM") || User.IsInRole("DemoPM")))
+                    {
+                        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#assignpm">
+                            <i class="fas fa-pencil-alt">
+                            </i>
+                            Add PM
+                        </button>
+
+                        @*<a class="btn btn-dark btn-sm" href="@Url.Action("AssignPM", "Projects", new { id = Model.Id })">
+                                <i class="fas fa-pencil-alt">
+                                </i>
+                                Add PM
+                            </a>*@
+                    }
+                </div>
+                <hr />
+                <table class="table table-bordered table-hover">
+
+                    <tr>
+                        <th>
+                            Name
+                        </th>
+                        <th>
+                            Description
+                        </th>
+                        <th>
+                            Project Manager
+                        </th>
+                        <th>
+                            Created
+                        </th>
+                        <th>
+                            Updated
+                        </th>
+                        @*<th>
+                              Archived
+                            </th>*@
+                    </tr>
+                    <tbody>
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(model => model.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(model => model.Description)
+                            </td>
+                            @*@if (Model.ProjectManagerId == null)
+                                {
+                                    <p>Unassigned</p>
+                                }
+                                else
+                                {*@
+                            <td>
+                                @ViewBag.PMName
+                            </td>
+                            @*}*@
+                            <td>
+                                @Html.DisplayFor(model => model.Created)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(model => model.Updated)
+                            </td>
+                            @*<td>
+                                    @Html.DisplayFor(model => model.IsArchived)
+                                </td>*@
+                        </tr>
+                    </tbody>
+                </table>
+                <br />
+                <div class="container">
+                    <div class="col-12">
+                        <div class="row">
+                            <a class="btn btn-secondary btn-sm" id="btns" onclick="history.back(-1)">
+                                <i class="fas fa-arrow-alt-circle-left">
+                                </i>
+                                Go Back
+                            </a>
+
+                            @if ((User.IsInRole("PM") || User.IsInRole("Admin") || User.IsInRole("DemoPM") || User.IsInRole("DemoAdmin")) && Model.Tickets.Count != 0)
+                            {
+                                <a class="btn btn-dark btn-sm" id="btns" href="@Url.Action("AssignDeveloper", "Projects", new { id = Model.Id})">
+                                    <i class="fas fa-clipboard-list">
+                                    </i>
+                                    Assign Developer
+                                </a>
+                                <a class="btn btn-secondary btn-sm" id="btns" href="@Url.Action("Create", "Projects")">
+                                    <i class="fas fa-hammer">
+                                    </i>
+                                    Create New
+                                </a>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <h4>Project Tickets</h4>
+                <br />
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                Developer
+                            </th>
+                            <th>
+                                Project
+                            </th>
+                            <th>
+                                Submitter
+                            </th>
+                            <th>
+                                Type
+                            </th>
+                            <th>
+                                Status
+                            </th>
+                            <th>
+                                Priority
+                            </th>
+                            <th>
+                                Description
+                            </th>
+                            <th>
+                                Created
+                            </th>
+                            <th>
+                                Updated
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var item in Model.Tickets)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Developer.FirstName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Project.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Submitter.FirstName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TicketType.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TicketStatus.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TicketPriority.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Description)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Created)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Updated)
+                                </td>
+
+                                @if (item.SubmitterId == User.Identity.GetUserId() ||
+                                    User.IsInRole("PM") && item.Project.Users.Any(u => u.Id == User.Identity.GetUserId()) ||
+                                    User.IsInRole("Admin") ||
+                                    item.DeveloperId == User.Identity.GetUserId() ||
+                                    User.IsInRole("DemoPM") && item.Project.Users.Any(u => u.Id == User.Identity.GetUserId()) ||
+                                    User.IsInRole("DemoAdmin"))
+                                {
+                                    <td class="project-actions text-right">
+                                        <a class="btn btn-secondary btn-sm" href="@Url.Action("Details", "Tickets", new { id = item.Id })">
+                                            <i class="fas fa-folder">
+                                            </i>
+                                            View
+                                        </a>
+                                        <a class="btn btn-dark btn-sm" href="@Url.Action("Edit", "Tickets", new { id = item.Id })">
+                                            <i class="fas fa-pencil-alt">
+                                            </i>
+                                            Edit
+                                        </a>
+                                    </td>
+                                }
+                                else
+                                {
+                                    if (User.IsInRole("Dev") || User.IsInRole("DemoDev") || User.IsInRole("DemoSub") || User.IsInRole("Sub"))
+                                    {
+                                        <td>
+                                            <a class="btn btn-secondary btn-sm" href="@Url.Action("Details", "Tickets", new { id = item.Id })">
+                                                <i class="fas fa-folder">
+                                                </i>
+                                                View
+                                            </a>
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        @*<td></td>*@
+                                    }
+                                }
+
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class"container">
+    <div class="modal fade" id="assignpm">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header" color="dark">
+                    <h4 class="modal-title">Assign Project Manager</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    @using (Html.BeginForm())
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <div class="row">
+
+                            <div class="col">
+                                @Html.DropDownList("ProjectManagerId", null, "-Select Project Manager-", new { @class = "form-control" })
+
+                            </div>
+                        </div>
+
+                        <br />
+                        <div class="row">
+                            <div class="col">
+                                <button type="submit" class="btn btn-secondary">
+                                    <i class="fas fa-pencil-square">  </i>
+                                    Assign Project Manager
+                                </button>
+                            </div>
+                        </div>
+                        <br />
+                        @*<div class="row">
+                            <div class="col">
+                                <button type="submit" class="btn btn-secondary">Unassign Project Manager</button>
+                            </div>
+                        </div>*@
+                    }
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    @*<button type="button" class="btn btn-secondary">Save changes</button>*@
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+</div>

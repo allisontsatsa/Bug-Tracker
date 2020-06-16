@@ -1,0 +1,121 @@
+﻿@model IEnumerable<Bug_Tracker.ViewModel.CustomUserData>
+@{
+    ViewBag.Title = "Manage Project Assignments";
+}
+<style>
+    #btns {
+        margin-right: 10px;
+    }
+
+    #tbutt {
+        color: #343a40;
+    }
+
+    #tablecard {
+        padding-top: 20px;
+    }
+</style>
+
+<div class="container">
+    <div class="col-12" id="tablecard">
+        <div class="card card-dark">
+            <div class="card-header">
+                <h4 class="card-title m-0">Manage Project Assignments</h4>
+            </div>
+            <div class="card-body">
+
+                <div class="container">
+                    <div class="col-12">
+
+                        <br />
+                        @using (Html.BeginForm())
+                        {
+                            @Html.AntiForgeryToken()
+
+                            <div class="row">
+                                <div class="col">
+                                    @Html.DropDownList("UserId", null, "--Select User Or Begin Typing--", new { @class = "form-control combo" })
+                                </div>
+                                <div class="col">
+                                    @Html.DropDownList("ProjectId", null, "--Select Project or Begin Typing--", new { @class = "form-control combo" })
+                                </div>
+                            </div>
+                            <br />
+                            <div class="row">
+                                <div class="col">
+                                    <button type="submit" value="true" name="addUser" class="btn btn-secondary" style="width:80%">Add Users</button>
+
+                                    <br />
+                                    <br />
+                                </div>
+                                <div class="col">
+                                    <button type="submit" value="false" name="addUser" class="btn btn-secondary" style="width:80%">Remove Users</button>
+
+                                </div>
+                            </div>
+                        }
+                        <div class="container">
+                            <div class="col-12">
+                                <div class="row">
+                                    <a class="btn btn-secondary btn-sm" id="btns" onclick="history.back(-1)">
+                                        <i class="fas fa-arrow-alt-circle-left">
+                                        </i>
+                                        Go Back
+                                    </a>
+                                    <a class="btn btn-secondary btn-sm" href="@Url.Action("Create", "Projects")">
+                                        <i class="fas fa-hammer">
+                                        </i>
+                                        Create New
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        @Html.DisplayName("Full Name")
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Email)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayName("User Role")
+                                    </th>
+                                    <th>
+                                        @Html.DisplayName("Projects")
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var user in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            @Html.DisplayFor(model => user.FullName)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(model => user.Email)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(model => user.RoleName)
+                                        </td>
+                                        <td>
+                                            @foreach (var projName in user.ProjectNames)
+                                            {
+                                                <p>@projName</p>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

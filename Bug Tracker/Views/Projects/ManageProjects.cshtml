@@ -1,0 +1,107 @@
+﻿@using Microsoft.AspNet.Identity
+@model Bug_Tracker.ViewModel.ProjectListViewModel
+
+<style>
+    #tbutt {
+        color: #343a40;
+    }
+
+    #tablecard {
+        padding-top: 20px;
+    }
+</style>
+
+<div class="container">
+    <div class="col-12" id="tablecard">
+        <div class="card card-dark">
+            <div class="card-header">
+                <h4 class="card-title m-0">Manage Projects</h4>
+            </div>
+            <div class="card-body">
+                @{
+                    ViewBag.Title = "Index";
+                }
+                <a class="btn btn-secondary btn-sm" id="btns" onclick="history.back(-1)">
+                    <i class="fas fa-arrow-alt-circle-left">
+                    </i>
+                    Go Back
+                </a>
+                <br />
+                <br />
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>
+                                Project Name
+                            </th>
+                            <th>
+                                Description
+                            </th>
+                            <th>
+                                Created
+                            </th>
+                            <th>
+                                Updated
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var item in Model.Projects)
+                        {
+                            <tr>
+                                <td>
+                                    @item.Project.Name
+                                </td>
+                                <td>
+                                    @item.Project.Description
+                                </td>
+                                <td>
+                                    @item.Project.Created
+                                </td>
+                                <td>
+                                    @item.Project.Updated
+                                </td>
+                                @if (User.IsInRole("PM") || User.IsInRole("Admin") ||
+                                    User.IsInRole("DemoPM") && item.Project.Users.Any(u => u.Id == User.Identity.GetUserId() ||
+                                    User.IsInRole("DemoAdmin")))
+                                {
+                                    <td class="project-actions text-right">
+                                        <a class="btn btn-secondary btn-sm" href="@Url.Action("Details", "Projects", new { id = item.Project.Id })">
+                                            <i class="fas fa-folder">
+                                            </i>
+                                            View
+                                        </a>
+                                        <a class="btn btn-dark btn-sm" href="@Url.Action("Edit", "Projects", new { id = item.Project.Id })">
+                                            <i class="fas fa-pencil-alt">
+                                            </i>
+                                            Edit
+                                        </a>
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td>
+                                        <a class="btn btn-secondary btn-sm" href="@Url.Action("Details", "Projects", new { id = item.Project.Id })">
+                                            <i class="fas fa-eye">
+                                            </i>
+                                            View
+                                        </a>
+                                    </td>
+                                }
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <div class="col-12">
+                    <a class="btn btn-secondary btn-sm" href="@Url.Action("Index", "Projects")">
+                        <i class="fas fa-arrow-alt-circle-left">
+                        </i>
+                        Go Back
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

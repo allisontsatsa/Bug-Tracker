@@ -1,0 +1,140 @@
+﻿@using Microsoft.AspNet.Identity
+
+@model IEnumerable<Bug_Tracker.Models.Ticket>
+@{
+    ViewBag.Title = "ManageTickets";
+}
+<style>
+    #tbutt {
+        color: #343a40;
+    }
+
+    #tablecard {
+        padding-top: 20px;
+    }
+</style>
+<div class="container">
+    <div class="col-12" id="tablecard">
+        <div class="card card-dark">
+            <div class="card-header">
+                <h4 class="card-title m-0">Manage Tickets</h4>
+            </div>
+            <div class="card-body">
+                <a class="btn btn-secondary btn-sm" onclick="history.back(-1)">
+                    <i class="fas fa-arrow-alt-circle-left">
+                    </i>
+                    Go Back
+                    <br />
+                </a>
+                <br />
+                <br />
+                <table id="example2" class="table datatable table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayName("Developer")
+                            </th>
+                            <th>
+                                @Html.DisplayName("Project")
+                            </th>
+                            <th>
+                                @Html.DisplayName("Submitter")
+                            </th>
+                            <th>
+                                @Html.DisplayName("Type")
+                            </th>
+                            <th>
+                                @Html.DisplayName("Status")
+                            </th>
+                            <th>
+                                @Html.DisplayName("Priority")
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Description)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Created)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Updated)
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Developer.FirstName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Project.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Submitter.FirstName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TicketType.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TicketStatus.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TicketPriority.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Description)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Created)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Updated)
+                                </td>
+                                @if (item.SubmitterId == User.Identity.GetUserId() ||
+                                    User.IsInRole("PM") && item.Project.Users.Any(u => u.Id == User.Identity.GetUserId()) ||
+                                    User.IsInRole("Admin") ||
+                                    item.DeveloperId == User.Identity.GetUserId() ||
+                                    User.IsInRole("DemoPM") && item.Project.Users.Any(u => u.Id == User.Identity.GetUserId()) ||
+                                    User.IsInRole("DemoAdmin"))
+                                {
+                                    <td class="project-actions text-right">
+                                        <a class="btn btn-secondary btn-sm" href="@Url.Action("Details", "Tickets", new { id = item.Id })">
+                                            <i class="fas fa-folder">
+                                            </i>
+                                            View
+                                        </a>
+                                        <a class="btn btn-dark btn-sm" href="@Url.Action("Edit", "Tickets", new { id = item.Id })">
+                                            <i class="fas fa-pencil-alt">
+                                            </i>
+                                            Edit
+                                        </a>
+                                    </td>
+                                }
+                                else
+                                {
+                                    if (User.IsInRole("Dev") || User.IsInRole("DemoDev") || User.IsInRole("DemoSub") || User.IsInRole("Sub"))
+                                    {
+                                        <td>
+                                            <a class="btn btn-secondary btn-sm" href="@Url.Action("Details", "Tickets", new { id = item.Id })">
+                                                <i class="fas fa-folder">
+                                                </i>
+                                                View
+                                            </a>
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                }
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
